@@ -242,6 +242,11 @@ dl.notes-list dd span { font-size: 14px; color: var(--ink-2); }
 @media (min-width: 768px) { .adorn h2 { font-size: 30px; } }
 .adorn p { margin-top: 16px; max-width: 34ch; color: var(--ink-2); }
 
+/* the wide photo band: short and cinematic on desktop, taller on phones */
+.plate-band { aspect-ratio: 4 / 5; }
+@media (min-width: 640px) { .plate-band { aspect-ratio: 16 / 9; } }
+@media (min-width: 768px) { .plate-band { aspect-ratio: 21 / 9; } }
+
 /* dune band */
 .dunes { padding-bottom: 0; }
 .dunes .plate { aspect-ratio: 4 / 5; }
