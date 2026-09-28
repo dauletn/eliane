@@ -1,0 +1,467 @@
+/* Cascade layer order: reset lowest, then Tailwind/Quanta base, then
+ * components and finally utilities — so Quanta's q-* utilities (e.g.
+ * q-button-*) always win over global element resets. */
+@layer reset, theme, base, components, utilities;
+
+@import "tailwindcss" source(none);
+@source "../src";
+@source "../packages/quanta/src";
+@import "@higgsfield/quanta/tailwind.css";
+
+/* New in-app Quanta-style components (moved out of the quanta package). Their
+ * CSS uses Tailwind v4 @utility/@source, so it must load through this tailwind
+ * entry. Ordering mirrors quanta's components.css (composer after button;
+ * media-card + generation-card after media). */
+@import "./components/composer/composer.css";
+@import "./components/media-card/media-card.css";
+@import "./components/generation-card/generation-card.css";
+@import "./components/setting-trigger/setting-trigger.css";
+@import "./components/prompt-box/prompt-box.css";
+@import "./components/icon-tile/icon-tile.css";
+
+@import "tw-animate-css";
+
+@custom-variant dark (&:where([data-theme="default-dark"], [data-theme="default-dark"] *));
+
+@theme {
+  --spacing: 0.25rem;
+}
+
+/* ---------------------------------------------------------------------------
+ * ELIANE — house token layer.
+ * The brand's own palette, taken from the identity board the owner supplied.
+ * Cream ground, lavender as the secondary ground, gold as the ONE accent.
+ * ------------------------------------------------------------------------- */
+@theme {
+  --color-cream: #f7f4ed;
+  --color-cream-deep: #efeae0;
+  --color-cream-soft: #fbf9f4;
+  --color-ink: #221f1b;
+  --color-ink-soft: #4a453d;
+  --color-ink-faint: #7d766b;
+  --color-lavender: #cdc2e3;
+  --color-lavender-soft: #e4ddf0;
+  --color-lavender-deep: #8e7fb8;
+  --color-gold: #d4af37;
+  --color-gold-deep: #a8871f;
+  --color-hairline: #d9d2c4;
+
+  --font-display: "Cinzel", "Times New Roman", serif;
+  --font-body: "Montserrat", "Helvetica Neue", sans-serif;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--hf-color-background-primary);
+  --color-foreground: var(--hf-color-text-primary);
+  --color-card: var(--hf-color-background-secondary);
+  --color-card-foreground: var(--hf-color-text-primary);
+  --color-popover: var(--hf-color-background-secondary);
+  --color-popover-foreground: var(--hf-color-text-primary);
+  --color-primary: var(--hf-color-button-brand);
+  --color-primary-foreground: var(--hf-color-button-label-brand);
+  --color-secondary: var(--hf-color-background-secondary);
+  --color-secondary-foreground: var(--hf-color-text-primary);
+  --color-muted: var(--hf-color-background-tertiary);
+  --color-muted-foreground: var(--hf-color-text-secondary);
+  --color-accent: var(--hf-color-overlay-hover);
+  --color-accent-foreground: var(--hf-color-text-primary);
+  --color-destructive: var(--hf-color-state-error-bg);
+  --color-destructive-foreground: var(--hf-color-state-error-fg);
+  --color-border: var(--hf-color-border-default);
+  --color-input: var(--hf-color-border-default);
+  --color-ring: var(--hf-color-border-focus);
+  --color-ring-offset-background: var(--hf-color-background-primary);
+
+  --color-chart-1: var(--hf-color-lime-500);
+  --color-chart-2: var(--hf-color-pink-500);
+  --color-chart-3: var(--hf-color-blue-500);
+  --color-chart-4: var(--hf-color-yellow-500);
+  --color-chart-5: var(--hf-color-purple-500);
+
+  --color-sidebar: var(--hf-color-background-secondary);
+  --color-sidebar-foreground: var(--hf-color-text-primary);
+  --color-sidebar-primary: var(--hf-color-button-brand);
+  --color-sidebar-primary-foreground: var(--hf-color-button-label-brand);
+  --color-sidebar-accent: var(--hf-color-overlay-hover);
+  --color-sidebar-accent-foreground: var(--hf-color-text-primary);
+  --color-sidebar-border: var(--hf-color-border-default);
+  --color-sidebar-ring: var(--hf-color-border-focus);
+}
+
+:root {
+  --radius: 0.625rem;
+}
+
+@layer base {
+  html {
+    background-color: var(--hf-color-background-primary);
+    color: var(--hf-color-text-primary);
+    color-scheme: dark;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: var(--hf-color-background-primary);
+    color: var(--hf-color-text-primary);
+    font-family: var(--hf-type-family-secondary);
+  }
+
+  * {
+    border-color: var(--hf-color-border-default);
+  }
+}
+
+/* ELIANE overrides the template's dark shell: the house is cream. */
+@layer base {
+  html {
+    background-color: #f7f4ed;
+    color: #221f1b;
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #f7f4ed;
+    color: #221f1b;
+    font-family: "Montserrat", "Helvetica Neue", sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: #cdc2e3;
+    color: #221f1b;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /* Specimen label: the house's one piece of chrome. Sharp corners only,
+   * hairline gold border, cream paper. */
+  .el-label {
+    border: 1px solid #d4af37;
+    background-color: #fbf9f4;
+  }
+
+  .el-hair {
+    border-color: #d9d2c4;
+  }
+
+  .el-eyebrow {
+    font-family: "Montserrat", "Helvetica Neue", sans-serif;
+    font-weight: 300;
+    font-size: 0.625rem;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+
+  .el-serif {
+    font-family: "Cinzel", "Times New Roman", serif;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  /* A fixed frame around the films: the frame does not move, the picture does. */
+  .el-frame {
+    border: 1px solid #d4af37;
+    background-color: #efeae0;
+  }
+
+  /* --- mount build (no opacity, transform only, so a full page screenshot
+   * always shows every word) --------------------------------------------- */
+  .el-build {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+  }
+
+  .el-build > span {
+    display: block;
+    animation: el-rise 1100ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 110ms);
+  }
+
+  @keyframes el-rise {
+    from {
+      transform: translate3d(0, 118%, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .el-fade-mount {
+    animation: el-fade 1400ms ease-out both;
+    animation-delay: calc(var(--i, 0) * 120ms);
+  }
+
+  @keyframes el-fade {
+    from {
+      opacity: 0.15;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* --- scroll-linked plates (W-CLIP-PLATE) and labels (W-LABEL-DRIFT) ----
+   * clip-path and transform only, never opacity to zero: the page reads
+   * complete in a full page screenshot. */
+  .el-plate {
+    will-change: clip-path;
+  }
+
+  .el-drift {
+    will-change: transform;
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .el-plate {
+        animation: el-plate-wipe linear both;
+        animation-timeline: view();
+        animation-range: entry 5% cover 42%;
+      }
+
+      @keyframes el-plate-wipe {
+        from {
+          clip-path: inset(0 0 34% 0);
+        }
+        to {
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      .el-drift {
+        animation: el-drift-y linear both;
+        animation-timeline: view();
+        animation-range: entry 0% exit 100%;
+      }
+
+      @keyframes el-drift-y {
+        from {
+          transform: translate3d(0, 2.6rem, 0);
+        }
+        to {
+          transform: translate3d(0, -2.6rem, 0);
+        }
+      }
+
+      .el-parallax {
+        animation: el-parallax-y linear both;
+        animation-timeline: view();
+        animation-range: entry 0% exit 100%;
+      }
+
+      @keyframes el-parallax-y {
+        from {
+          transform: scale(1.14) translate3d(0, 3.2%, 0);
+        }
+        to {
+          transform: scale(1.14) translate3d(0, -3.2%, 0);
+        }
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .el-build > span,
+    .el-fade-mount,
+    .el-plate,
+    .el-drift,
+    .el-parallax {
+      animation: none !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* CTA garment one: the nav word. A gold rule draws under it, left to right. */
+  .el-cta-nav {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.35rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: #221f1b;
+  }
+
+  .el-cta-nav::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background-color: #d4af37;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .el-cta-nav:hover::after,
+  .el-cta-nav:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .el-cta-nav:active {
+    transform: translateY(1px);
+  }
+
+  /* CTA garment two: the hero invitation. Hairline underline sweeps in, the
+   * star beside it turns. */
+  .el-cta-hero {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 0;
+    font-family: "Montserrat", "Helvetica Neue", sans-serif;
+    font-size: 0.6875rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #221f1b;
+  }
+
+  .el-cta-hero .el-cta-hero-line {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background-color: #d4af37;
+    transform: scaleX(0.18);
+    transform-origin: left center;
+    transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .el-cta-hero:hover .el-cta-hero-line,
+  .el-cta-hero:focus-visible .el-cta-hero-line {
+    transform: scaleX(1);
+  }
+
+  .el-cta-hero .el-star {
+    transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .el-cta-hero:hover .el-star {
+    transform: rotate(135deg) scale(1.12);
+  }
+
+  .el-cta-hero:active {
+    transform: translateY(1px);
+  }
+
+  /* CTA garment three: the correspondence block. Dark ink, the star travels
+   * right and a gold wash fills from the left. */
+  .el-cta-letter {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    width: 100%;
+    padding: 1.6rem 1.75rem;
+    background-color: #221f1b;
+    color: #f7f4ed;
+    overflow: hidden;
+    transition: color 420ms ease;
+  }
+
+  .el-cta-letter::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #d4af37;
+    transform: translateX(-101%);
+    transition: transform 640ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .el-cta-letter > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .el-cta-letter:hover::before,
+  .el-cta-letter:focus-visible::before {
+    transform: translateX(0);
+  }
+
+  .el-cta-letter:hover,
+  .el-cta-letter:focus-visible {
+    color: #221f1b;
+  }
+
+  .el-cta-letter .el-star {
+    transition: transform 640ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .el-cta-letter:hover .el-star {
+    transform: translateX(0.9rem);
+  }
+
+  .el-cta-letter:active {
+    transform: translateY(1px);
+  }
+
+  /* Film plate picture: the picture breathes inside the still gold frame. */
+  .el-frame-pic {
+    transition: transform 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .el-frame-link:hover .el-frame-pic,
+  .el-frame-link:focus-visible .el-frame-pic {
+    transform: scale(1.035);
+  }
+
+  .el-frame-link:focus-visible {
+    outline: 1px solid #d4af37;
+    outline-offset: 4px;
+  }
+
+  /* Specimen row: the printed number steps forward on hover. */
+  .el-row .el-row-num {
+    transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .el-row:hover .el-row-num {
+    transform: translateX(0.5rem);
+    color: #a8871f;
+  }
+
+  .el-row .el-row-plate {
+    transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .el-row:hover .el-row-plate {
+    transform: translateY(-0.5rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .el-cta-nav::after,
+    .el-cta-hero .el-cta-hero-line,
+    .el-cta-hero .el-star,
+    .el-cta-letter::before,
+    .el-cta-letter .el-star,
+    .el-frame-pic,
+    .el-row .el-row-num,
+    .el-row .el-row-plate {
+      transition: none !important;
+    }
+  }
+}
